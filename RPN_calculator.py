@@ -21,15 +21,28 @@ class Calculator:
     
     def showAsConventional(self): 
         conventional = []
+        try:
+            self.rpn[-1]
+        except IndexError:
+            print("Nothing to evaluate")
+            return
+        
         for d in self.rpn:
             if isNumber(d):
                 conventional.append(d)
-            else:
-                temp1=conventional.pop()
-                temp2=conventional.pop()
+            elif d in ("+","-","^","/","*"):
+                try:
+                    temp1=conventional.pop()
+                    temp2=conventional.pop()
+                except IndexError:
+                    print("Index Error - check postfix statement!!")
+                    return
                 temp3 = "(%s %s %s)" % (temp2, d,temp1)
-                conventional.append(temp3)    
-        print("infix notation: %s" % conventional[-1])  
+                conventional.append(temp3)
+            else:
+                print("Incorrect operator or operand!!")
+                return    
+        print("Infix notation: %s" % conventional[-1])  
         return
     
     def isNumber(self, n):
@@ -56,21 +69,54 @@ class Calculator:
                 except IndexError:
                     print("Index Error - check postfix statement!!")
                     return
-
-        print("Result = %f" % self.stack[-1])
-
-            
+                except KeyError:
+                    print("Operator error! - check postfix statement!!")
+                    return
+                     
+        try:
+            self.rpn[-1]
+        except IndexError:
+            print("Nothing to evaluate")
+            return
+        if len(self.stack) > 1:
+            print("Missing operator")
+            return
+        print("Result = %s" % self.stack[-1])
         return
-        
+    
+    
+    def userRpnInput(self):
+        userInput = True 
+        while(userInput):
+            tmp = raw_input("Please enter another number or operator. Type 'end' to end input. Type 'del' to delete last. Type 'quit' to quit.\nYour input : %s\n" % self.rpn)
+            if isNumber(tmp):
+                tmp = float(tmp)
+            elif tmp == "end":
+                self.showAsConventional()
+                self.calculate(self.rpn)
+                raw_input("Press enter to continue...")
+                continue
+            elif tmp == "del":
+                try:
+                    self.rpn.pop()
+                except IndexError:
+                    print("Your statement is already empty!")
+                    raw_input("Press enter to continue...")
+                continue
+            elif tmp == "quit":
+                return
+            self.rpn.append(tmp)
+            tmp=""
+        return
         
         
     
 calculator = Calculator()
-calculator.rpn = [19, 2.14, "+" , 4.5, 2, 4.3, "/", "-", "*"] #85.297442
+#test rpn statements
+#calculator.rpn = [19, 2.14, "+" , 4.5, 2, 4.3, "/", "-", "*"] #85.297442
 #calculator.rpn = [12, 2, 3, 4, "*", 10, 5, "/", "+", "*", "+"] #40
-
-calculator.showInputString()
-calculator.showAsConventional()
-calculator.calculate(calculator.rpn)
-
+calculator.userRpnInput()
+#calculator.showInputString()
+#calculator.showAsConventional()
+#calculator.calculate(calculator.rpn)
 
