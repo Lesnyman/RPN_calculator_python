@@ -1,7 +1,6 @@
 import sys
 class Calculator:
-    rpn = []
-    stack = []
+    rpn = [] #rpn notation input
     operations = {"+":lambda x,y: x + y,
                   "-":lambda x,y: x - y,
                   "*":lambda x,y: x * y,
@@ -18,7 +17,7 @@ class Calculator:
             
         return
     
-    def showAsConventional(self): 
+    def showAsInfix(self): 
         conventional = []
         try:
             self.rpn[-1]
@@ -55,18 +54,18 @@ class Calculator:
         return a+b;
     
     def calculate(self, calculator):
-        self.stack = []
+        stack = []
         for calc in calculator:
-            #print(self.stack)
+            #print(stack)
             if self.isNumber(calc):
-                self.stack.append(calc)
+                stack.append(calc)
             else:
                 try:
-                    temp1=self.stack.pop()
-                    temp2=self.stack.pop()
+                    temp1=stack.pop()
+                    temp2=stack.pop()
                     result = self.operations[calc](temp2,temp1)
                     #print(result)
-                    self.stack.append(result)
+                    stack.append(result)
                 except IndexError:
                     print("Index Error - check postfix statement!!")
                     return
@@ -79,11 +78,11 @@ class Calculator:
         except IndexError:
             print("Nothing to evaluate")
             return
-        if len(self.stack) > 1:
+        if len(stack) > 1:
             print("Missing operator or operand")
-            #print(self.stack)
+            #print(stack)
             return
-        print("Result = %s" % self.stack[-1])
+        print("Result = %s" % stack[-1])
         return
     
     
@@ -94,7 +93,7 @@ class Calculator:
             if self.isNumber(tmp):
                 tmp = float(tmp)
             elif tmp == "end":
-                self.showAsConventional()
+                self.showAsInfix()
                 self.calculate(self.rpn)
                 raw_input("Press enter to continue...")
                 continue
@@ -107,6 +106,8 @@ class Calculator:
                 continue
             elif tmp == "quit":
                 return
+            elif tmp == "":
+                continue
             self.rpn.append(tmp)
             tmp=""
         return
@@ -115,10 +116,8 @@ class Calculator:
     
 calculator = Calculator()
 #test rpn statements
-#calculator.rpn = [19, 2.14, "+" , 4.5, 2, 4.3, "/", "-", "*"] #85.297442
+calculator.rpn = [19, 2.14, "+" , 4.5, 2, 4.3, "/", "-", "*"] #85.297442
 #calculator.rpn = [12, 2, 3, 4, "*", 10, 5, "/", "+", "*", "+"] #40
 calculator.userRpnInput()
-#calculator.showInputString()
-#calculator.showAsConventional()
-#calculator.calculate(calculator.rpn)
+
 
