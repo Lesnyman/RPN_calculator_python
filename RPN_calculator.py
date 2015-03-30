@@ -1,4 +1,3 @@
-from reportlab.lib.validators import isNumber
 import sys
 class Calculator:
     rpn = []
@@ -28,7 +27,7 @@ class Calculator:
             return
         
         for d in self.rpn:
-            if isNumber(d):
+            if self.isNumber(d):
                 conventional.append(d)
             elif d in ("+","-","^","/","*"):
                 try:
@@ -57,7 +56,7 @@ class Calculator:
     
     def calculate(self, calculator):
         for calc in calculator:
-            if isNumber(calc):
+            if self.isNumber(calc):
                 self.stack.append(calc)
             else:
                 try:
@@ -89,7 +88,7 @@ class Calculator:
         userInput = True 
         while(userInput):
             tmp = raw_input("Please enter another number or operator. Type 'end' to end input. Type 'del' to delete last. Type 'quit' to quit.\nYour input : %s\n" % self.rpn)
-            if isNumber(tmp):
+            if self.isNumber(tmp):
                 tmp = float(tmp)
             elif tmp == "end":
                 self.showAsConventional()
