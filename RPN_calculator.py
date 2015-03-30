@@ -6,7 +6,7 @@ class Calculator:
                   "-":lambda x,y: x - y,
                   "*":lambda x,y: x * y,
                   "/":lambda x,y: x / y,
-                  "^":lambda x,y: pow(x, y)
+                  "^":lambda x,y: x ** y
                   }
     
     def showInputString(self):
@@ -55,7 +55,9 @@ class Calculator:
         return a+b;
     
     def calculate(self, calculator):
+        self.stack = []
         for calc in calculator:
+            #print(self.stack)
             if self.isNumber(calc):
                 self.stack.append(calc)
             else:
@@ -78,7 +80,8 @@ class Calculator:
             print("Nothing to evaluate")
             return
         if len(self.stack) > 1:
-            print("Missing operator")
+            print("Missing operator or operand")
+            #print(self.stack)
             return
         print("Result = %s" % self.stack[-1])
         return
